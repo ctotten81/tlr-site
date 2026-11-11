@@ -1,85 +1,417 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Support · The Locker Room</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Locker Room — WPIAL scores, schedules and NIL compliance</title>
+<meta name="description" content="WPIAL scores, schedules and rosters, plus NIL compliance tools for high school athletes, families and athletic directors.">
+<link rel="canonical" href="https://tlrsports.io/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Locker Room">
+<meta property="og:title" content="The Locker Room">
+<meta property="og:description" content="WPIAL scores, schedules and rosters, plus NIL compliance tools for high school athletes, families and athletic directors.">
+<meta property="og:url" content="https://tlrsports.io/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0B1D3A">
+
 <style>
-  :root { --navy:#0B1D3A; --gold:#C9A227; --ink:#1a1a1a; --muted:#5a6472; --line:#e3e6ea; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-         color:var(--ink); line-height:1.65; background:#fff; }
-  header { background:var(--navy); padding:28px 20px; }
-  header .wrap { max-width:760px; margin:0 auto; }
-  header a.brand { color:var(--gold); text-decoration:none; font-weight:800; letter-spacing:2px; font-size:14px; }
-  header h1 { color:#fff; margin:10px 0 0; font-size:26px; line-height:1.25; }
-  nav { background:#08172e; padding:12px 20px; border-bottom:3px solid var(--gold); }
-  nav .wrap { max-width:760px; margin:0 auto; }
-  nav a { color:#cfd6e0; text-decoration:none; margin-right:20px; font-size:14px; }
-  nav a:hover { color:var(--gold); }
-  main { max-width:760px; margin:0 auto; padding:32px 20px 80px; }
-  h2 { color:var(--navy); margin-top:36px; font-size:20px; border-bottom:1px solid var(--line); padding-bottom:6px; }
-  h3 { color:var(--navy); font-size:16px; margin-top:26px; }
-  a { color:#12508f; }
-  ul { padding-left:22px; }
-  li { margin-bottom:8px; }
-  hr { border:0; border-top:1px solid var(--line); margin:32px 0; }
-  code { background:#f4f6f8; padding:2px 5px; border-radius:3px; font-size:90%; }
-  .updated { color:var(--muted); font-size:14px; }
-  .card { background:#f7f9fb; border:1px solid var(--line); border-left:4px solid var(--gold);
-          padding:16px 18px; border-radius:6px; margin:22px 0; }
-  footer { border-top:1px solid var(--line); padding:24px 20px 60px; color:var(--muted); font-size:14px; }
-  footer .wrap { max-width:760px; margin:0 auto; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; }
+  img { max-width: 100%; height: auto; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;800&display=swap">
+
+<style>
+  /* Layout: the app's own card vocabulary, scaled up — scoreboard rows,
+     gold pills and section eyebrows, stacked in a single narrow column. */
+  :root {
+    --navy:        #0B1D3A;
+    --surface:     #11274A;
+    --card:        #16305A;
+    --line:        #27457A;
+    --gold:        #C9A227;
+    --ink:         #FFFFFF;
+    --ink-soft:    rgba(255,255,255,0.74);
+    --ink-faint:   rgba(255,255,255,0.46);
+    --win:         #4ADE80;
+
+    --display: 'Oswald', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
+    --body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--navy);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin-inline: auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  section { padding-block: 44px; }
+  section + section { border-top: 1px solid var(--line); }
+
+  .eyebrow {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(34px, 8vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    margin: 0 0 16px;
+  }
+  h1 em { font-style: normal; color: var(--gold); }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(24px, 5vw, 32px);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    margin: 0 0 12px;
+  }
+
+  h3 { font-size: 17px; font-weight: 800; margin: 0 0 6px; }
+
+  p { margin: 0 0 14px; max-width: 62ch; color: var(--ink-soft); }
+  p.lead { font-size: 18px; color: var(--ink-soft); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---- hero ---- */
+  .hero { padding-block: 56px 48px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+
+  .cta, .cta-ghost {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 13px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .cta { background: var(--gold); color: var(--navy); }
+  .cta-ghost { border: 1px solid var(--line); color: var(--ink); }
+  .cta-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  a:focus-visible, .cta:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .note { font-size: 13px; color: var(--ink-faint); margin-top: 14px; }
+
+  /* ---- scoreboard ---- */
+  .board { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+  .game {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .team {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 3px 0;
+  }
+  .team .name { flex: 1; min-width: 0; font-weight: 600; font-size: 15px; }
+  .team .seed { font-family: var(--display); font-size: 12px; color: var(--ink-faint); letter-spacing: 0.06em; }
+  .team .score {
+    font-family: var(--display); font-weight: 700; font-size: 20px;
+    font-variant-numeric: tabular-nums; color: var(--ink-faint);
+  }
+  .team.won .name { color: var(--ink); }
+  .team.won .score { color: var(--win); }
+  .team.lost .name { color: var(--ink-soft); }
+
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--line);
+  }
+  .status { font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; text-transform: uppercase; }
+  .pill {
+    font-family: var(--display); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--gold); color: var(--navy);
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .pill.quiet { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+
+  .round {
+    font-family: var(--display); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 24px 0 4px;
+  }
+  .round:first-of-type { margin-top: 6px; }
+
+  /* ---- feature grid ---- */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    min-width: 0;
+  }
+  .tile .tag {
+    font-family: var(--display); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
+    display: block; margin-bottom: 8px;
+  }
+  .tile p { font-size: 14px; margin: 0; }
+
+  /* ---- school colours ---- */
+  .schools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .school {
+    display: flex; align-items: center; gap: 9px;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 7px 14px 7px 8px;
+    font-size: 13px; font-weight: 600;
+  }
+  .swatch {
+    width: 26px; height: 26px; border-radius: 999px;
+    border: 2px solid currentColor; flex: none;
+  }
+
+  /* ---- list ---- */
+  ul.checks { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 11px; }
+  ul.checks li {
+    display: flex; gap: 11px; align-items: flex-start;
+    font-size: 15px; color: var(--ink-soft);
+  }
+  ul.checks li::before {
+    content: "✓"; color: var(--gold); font-weight: 800; flex: none; line-height: 1.5;
+  }
+  ul.checks strong { color: var(--ink); font-weight: 600; }
+
+  /* ---- footer ---- */
+  footer { padding-block: 32px 44px; border-top: 1px solid var(--line); }
+  .flinks { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 14px; }
+  .flinks a { color: var(--ink-soft); text-decoration: none; font-size: 14px; }
+  .flinks a:hover { color: var(--gold); }
+  .fine { font-size: 12.5px; color: var(--ink-faint); margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <a class="brand" href="./">THE LOCKER ROOM</a>
-  <h1>Support</h1>
-</div></header>
-<nav><div class="wrap">
-  <a href="./">Support</a><a href="./privacy.html">Privacy Policy</a><a href="./terms.html">Terms of Service</a>
-</div></nav>
-<main>
-<h2 id="need-help">Need help?</h2>
-<p>The Locker Room is a sports-first social platform for high school
-student-athletes, with NIL disclosure and compliance built in.</p>
-<p>For any question, problem, or request — including account help,
-content reports, and parent or guardian requests — email us:</p>
-<p><strong>casey@tlrsports.io</strong></p>
-<p>We aim to respond within two business days.</p>
-<h2 id="for-parents-and-guardians">For parents and guardians</h2>
-<p>If your student-athlete uses The Locker Room, you can:</p>
-<ul>
-<li>Review your child’s account and the information on it</li>
-<li>Approve or decline any NIL deal before it is disclosed to their
-school</li>
-<li>Request corrections to their information</li>
-<li>Request deletion of their account and information</li>
-</ul>
-<p>Email us at <strong>casey@tlrsports.io</strong> and we will help you
-directly.</p>
-<h2 id="reporting-content">Reporting content</h2>
-<p>Every post and profile in the app has a <strong>⋯</strong> menu with
-options to report or block. Reported content is reviewed and acted on.
-If you need to report something urgently, email us and we will respond
-as quickly as we can.</p>
-<h2 id="deleting-your-account">Deleting your account</h2>
-<p>You can delete your account at any time from inside the app: tap your
-profile icon, then <strong>Delete Account</strong>. This removes your
-profile, posts, and account data.</p>
-<p>Note: if you have disclosed an NIL deal, a record of that disclosure
-is retained for your school’s compliance and PIAA reporting obligations,
-as described in our <a href="./privacy.html">Privacy Policy</a>.</p>
-<h2 id="legal">Legal</h2>
-<ul>
-<li><a href="./privacy.html">Privacy Policy</a></li>
-<li><a href="./terms.html">Terms of Service</a></li>
-</ul>
 
-</main>
-<footer><div class="wrap">
-  The Locker Room · Pittsburgh, PA · <a href="mailto:casey@tlrsports.io">casey@tlrsports.io</a>
-</div></footer>
+
+<div class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">The Locker Room</p>
+    <h1>Every game.<br>Every roster.<br><em>Every deal on the record.</em></h1>
+    <p class="lead">
+      WPIAL scores, schedules and rosters — plus the NIL compliance tools athletes,
+      parents and athletic directors actually need. Free for athletes, and free for
+      our founding schools.
+    </p>
+    <div class="actions">
+      <span class="cta">Download on iPhone</span>
+      <a class="cta-ghost" href="#ads">For athletic directors</a>
+    </div>
+    <p class="note">Built in Pittsburgh, for Western Pennsylvania.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">WPIAL Football</p>
+    <h2>This week in the playoffs</h2>
+    <p>Class 6A semifinals and 5A quarterfinals, Friday 13 November. Scores land in the app as games finish.</p>
+
+    <p class="round">Class 6A semifinals · Friday</p>
+    <div class="board">
+
+      <div class="game">
+        <div class="team"><span class="name">Hempfield Area</span></div>
+        <div class="team"><span class="name">Central Catholic</span></div>
+        <div class="meta"><span class="status">Friday · 7:00</span><span class="pill quiet">Semifinal</span></div>
+      </div>
+
+      <div class="game">
+        <div class="team"><span class="name">North Allegheny</span></div>
+        <div class="team"><span class="name">Canon-McMillan</span></div>
+        <div class="meta"><span class="status">Friday · 7:00</span><span class="pill quiet">Semifinal</span></div>
+      </div>
+
+    </div>
+
+    <p class="round">Class 5A quarterfinals · Friday</p>
+    <div class="board">
+
+      <div class="game">
+        <div class="team"><span class="seed">8</span><span class="name">Trinity</span></div>
+        <div class="team"><span class="seed">1</span><span class="name">Pine-Richland</span></div>
+        <div class="meta"><span class="status">Friday · 7:00</span><span class="pill quiet">Quarterfinal</span></div>
+      </div>
+
+      <div class="game">
+        <div class="team"><span class="seed">5</span><span class="name">West Allegheny</span></div>
+        <div class="team"><span class="seed">4</span><span class="name">North Hills</span></div>
+        <div class="meta"><span class="status">Friday · 7:00</span><span class="pill quiet">Quarterfinal</span></div>
+      </div>
+
+      <div class="game">
+        <div class="team"><span class="seed">7</span><span class="name">Thomas Jefferson</span></div>
+        <div class="team"><span class="seed">2</span><span class="name">Penn-Trafford</span></div>
+        <div class="meta"><span class="status">Friday · 7:00</span><span class="pill quiet">Quarterfinal</span></div>
+      </div>
+
+      <div class="game">
+        <div class="team"><span class="seed">11</span><span class="name">Armstrong</span></div>
+        <div class="team"><span class="seed">3</span><span class="name">Upper St. Clair</span></div>
+        <div class="meta"><span class="status">Friday · 7:00</span><span class="pill quiet">Quarterfinal</span></div>
+      </div>
+
+    </div>
+
+    <p class="round">Class 5A first round · Final</p>
+    <div class="board">
+
+      <div class="game">
+        <div class="team won"><span class="seed">11</span><span class="name">Armstrong</span><span class="score">42</span></div>
+        <div class="team lost"><span class="seed">6</span><span class="name">Woodland Hills</span><span class="score">28</span></div>
+        <div class="meta"><span class="status">Final</span><span class="pill">Upset</span></div>
+      </div>
+
+      <div class="game">
+        <div class="team won"><span class="seed">7</span><span class="name">Thomas Jefferson</span><span class="score">42</span></div>
+        <div class="team lost"><span class="seed">10</span><span class="name">Moon</span><span class="score">0</span></div>
+        <div class="meta"><span class="status">Final</span></div>
+      </div>
+
+      <div class="game">
+        <div class="team won"><span class="seed">5</span><span class="name">West Allegheny</span><span class="score">28</span></div>
+        <div class="team lost"><span class="seed">12</span><span class="name">Gateway</span><span class="score">21</span></div>
+        <div class="meta"><span class="status">Final</span></div>
+      </div>
+
+      <div class="game">
+        <div class="team won"><span class="seed">8</span><span class="name">Trinity</span><span class="score">21</span></div>
+        <div class="team lost"><span class="seed">9</span><span class="name">Greater Latrobe</span><span class="score">0</span></div>
+        <div class="meta"><span class="status">Final</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Inside the app</p>
+    <h2>Four things, done properly</h2>
+    <div class="grid">
+      <div class="tile">
+        <span class="tag">Feed</span>
+        <h3>Your school, not the algorithm</h3>
+        <p>Highlights, results and posts from your own program. Sports only, moderated, and built for the people actually in it.</p>
+      </div>
+      <div class="tile">
+        <span class="tag">Roster</span>
+        <h3>A profile that travels</h3>
+        <p>Height, weight, position, film and stats — the things recruiters and coaches ask for, in one place the athlete controls.</p>
+      </div>
+      <div class="tile">
+        <span class="tag">Schedule</span>
+        <h3>Every WPIAL sport</h3>
+        <p>Schedules, scores, records and brackets across fall and winter sports. Not just football.</p>
+      </div>
+      <div class="tile">
+        <span class="tag">NIL Hub</span>
+        <h3>Deals, on the record</h3>
+        <p>Check a deal before saying yes, get a guardian's approval, and disclose it to your athletic director inside the window.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="schools">
+    <p class="eyebrow">Built around your school</p>
+    <h2>It wears your colors</h2>
+    <p>
+      Open the app as a North Allegheny athlete and it is black and gold. Open it at
+      Pine-Richland and it is green and white. Not a logo in a corner — the whole app.
+    </p>
+    <div class="schools">
+      <span class="school"><span class="swatch" style="background:#0B1D3A;color:#C9A227"></span>Central Catholic</span>
+      <span class="school"><span class="swatch" style="background:#1C1C1C;color:#FFB81C"></span>North Allegheny</span>
+      <span class="school"><span class="swatch" style="background:#0C3026;color:#FFFFFF"></span>Pine-Richland</span>
+      <span class="school"><span class="swatch" style="background:#1B3C8C;color:#F2D338"></span>Mt. Lebanon</span>
+      <span class="school"><span class="swatch" style="background:#000000;color:#6FB7E9"></span>Seneca Valley</span>
+      <span class="school"><span class="swatch" style="background:#12326B;color:#F2C230"></span>Norwin</span>
+      <span class="school"><span class="swatch" style="background:#0A4DA6;color:#F2C230"></span>Canon-McMillan</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">NIL Compliance</p>
+    <h2>The part nobody else does</h2>
+    <p>
+      Pennsylvania gives an athlete a short window to disclose an NIL deal to their
+      athletic director. Most schools run that on a paper form with two signatures.
+      The Locker Room runs it properly.
+    </p>
+    <ul class="checks">
+      <li><strong>Guardian approval is enforced, not assumed.</strong> A minor's deal cannot be accepted until a linked parent or guardian approves it.</li>
+      <li><strong>The disclosure clock is tracked.</strong> Each deal carries the date it was signed and the date it was disclosed.</li>
+      <li><strong>Athletic directors get a record they can export.</strong> A dated, signed PDF for the PIAA, not a spreadsheet someone keeps by hand.</li>
+      <li><strong>College reporting starts in high school.</strong> The NCAA counts deals from junior year. Athletes can export their own history for college compliance staff.</li>
+      <li><strong>We never touch deal money.</strong> No cut, no payments through the platform, ever.</li>
+    </ul>
+  </section>
+
+  <section id="ads">
+    <p class="eyebrow">For athletic directors</p>
+    <h2>You stay out of the middle</h2>
+    <p>
+      The school is never a party to an NIL agreement. You get visibility and a record you
+      can produce on demand — not a role in the deal.
+    </p>
+    <p>
+      We are taking a limited group of founding schools this season. To see how it would work
+      at your program, write to <strong>casey@tlrsports.io</strong>.
+    </p>
+    <div class="actions">
+      <a class="cta-ghost" href="https://tlrsports.io/privacy.html">Read the privacy policy</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="flinks">
+      <a href="https://tlrsports.io/support.html">Support</a>
+      <a href="https://tlrsports.io/privacy.html">Privacy</a>
+      <a href="https://tlrsports.io/terms.html">Terms</a>
+    </div>
+    <p class="fine">
+      The Locker Room is a product of TLR Sports LLC, Pittsburgh, Pennsylvania.
+      Not affiliated with the WPIAL, the PIAA, the NCAA or the College Sports Commission.
+      Compliance features are not legal advice.
+    </p>
+  </footer>
+
+</div>
+
 </body>
 </html>
